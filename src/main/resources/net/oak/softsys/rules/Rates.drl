@@ -1,0 +1,67 @@
+package net.oak.softsys.rules;
+
+import net.oak.softsys.model.domain.Person;
+import net.oak.softsys.model.domain.Product;
+
+
+dialect "mvel" 
+
+rule "Condition:  Florida"
+when
+personObject : Person(nameOfState == "Florida");
+then
+System.out.println("Product is Disqualified, We don't offer to Florida Residents");
+Product productObject = new Product();
+productObject.setDisqualified(true);
+end; 
+
+rule "Condition: Maryland"
+when
+personObject : Person(nameOfState == "Maryland");
+then
+System.out.println("This Product is Qualified, We offer to Maryland Residents");
+Product productObject = new Product();
+productObject.setDisqualified(false);
+end; 
+
+rule "Condition: High Credit Score"
+when 
+personObject : Person(creditScore >= 720);
+then 
+System.out.println(personObject.getFirstName()+ " " +"has a High Credit Score");
+Product productObject = new Product();
+productObject.setInterestRate(5.0 - .3);
+System.out.println( personObject.getFirstName()+ " " + "Has a reduced interest rate of:"+ productObject.getInterestRate());
+end;
+
+rule "Condition: Low Credit Score"
+when 
+personObject : Person(creditScore < 720);
+then 
+System.out.println("This Person has a Low Credit Score");
+Product productObject = new Product();
+productObject.setInterestRate(5.0 + .5);
+System.out.println(personObject.getFirstName()+ " " + "Now has a Increased interest rate of:"+ productObject.getInterestRate());
+end;
+
+rule "Condition: When Product is 7-1ARM"
+when 
+productObject : Product(productName == "7-1ARM");
+then 
+System.out.println("The Name of this Product is 7-1ARM");
+productObject.setInterestRate(5.0 + .5);
+System.out.println(productObject.getProductName()+ " " +"Now has an Increased interest rate of:"+ productObject.getInterestRate());
+end;
+
+rule "Condition: When Product is 8-1FIXED"
+when 
+productObject : Product(productName == "8-1FIXED");
+then 
+System.out.println("The Name of this Product is 8-1FIXED");
+productObject.setInterestRate(5.0 - .2);
+System.out.println(productObject.getProductName()+ " " +"Now has a reduced interest rate of:"+ productObject.getInterestRate());
+end;
+
+
+
+
